@@ -1,5 +1,9 @@
 import json
 
+with open("animals_template.html", "r") as file:
+  html_content = file.read()
+
+
 def load_data(file_path):
   """ Loads a JSON file """
   with open(file_path, "r") as handle:
