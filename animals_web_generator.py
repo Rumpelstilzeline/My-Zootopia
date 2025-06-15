@@ -8,3 +8,11 @@ def load_data(file_path):
 
 animals_data = load_data('animals_data.json')
 
+# Zugrif auf 'name'
+for animal in animals_data:
+  print("Name:", animal["name"])
+  characteristics = animal.get("characteristics", {})
+  print("  Diet:", characteristics.get("diet", "N/A"))
+
+
+animals_data = load_data('animals_data.json')
