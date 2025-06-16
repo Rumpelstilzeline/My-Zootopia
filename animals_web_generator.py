@@ -12,20 +12,27 @@ def load_data(file_path):
 
 animals_data = load_data('animals_data.json')
 
+output = ''   # Empty string for animal data
+
 for animal in animals_data:
-  print("Name:", animal["name"])
+  output += f"Name: {animal["name"]}\n"
 
   characteristics = animal.get("characteristics", {})
-  print("Diet:", characteristics.get("diet", "N/A"))
+  diet_info = characteristics.get("diet", "N/A")
+  output += f"Diet: {diet_info}\n"
 
-  print("Locations:")
+
+  output += "Locations:\n"
   for location in animal["locations"]:
-    print("   -", location)
+    output += f"   - {location}\n"
 
   if "type" in characteristics:
-    print("Type:", characteristics["type"])
-
-  print()
+    output += f"Type:, {characteristics["type"]}\n"
 
 
-animals_data = load_data('animals_data.json')
+# Inside the html_content, the old string is replaced by the ouput genereated here
+html_output = html_content.replace("__REPLACE_ANIMALS_INFO__", output)
+
+
+with open("animals.html", "w") as output_file:
+  output_file.write(html_output)
