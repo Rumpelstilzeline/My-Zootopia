@@ -4,8 +4,8 @@ def load_data(file_path):
     with open(file_path, "r") as handle:
         return json.load(handle)
 
-def generate_animals_text(data):
-    """Creates plain text output for HTML insertion"""
+def generate_animals_html(data):
+    """Generate basic HTML list items"""
     output = ""
     for animal in data:
         name = animal.get("name")
@@ -13,15 +13,16 @@ def generate_animals_text(data):
         locations = animal.get("locations")
         type_ = animal.get("characteristics", {}).get("type")
 
+        output += '<li class="cards__item">\n'
         if name:
-            output += f"Name: {name}\n"
+            output += f"Name: {name}<br/>\n"
         if diet:
-            output += f"Diet: {diet}\n"
+            output += f"Diet: {diet}<br/>\n"
         if locations:
-            output += f"Location: {locations[0]}\n"
+            output += f"Location: {locations[0]}<br/>\n"
         if type_:
-            output += f"Type: {type_}\n"
-        output += "\n"
+            output += f"Type: {type_}<br/>\n"
+        output += "</li>\n\n"
     return output
 
 def main():
@@ -30,12 +31,11 @@ def main():
     with open("animals_template.html", "r") as file:
         template = file.read()
 
-    animals_output = generate_animals_text(data)
-    new_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_output)
+    animals_html = generate_animals_html(data)
+    new_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_html)
 
     with open("animals.html", "w") as file:
         file.write(new_html)
 
 if __name__ == "__main__":
     main()
-
