@@ -1,12 +1,12 @@
 import json
 
 def load_data(file_path):
-    """Loads a JSON file"""
     with open(file_path, "r") as handle:
         return json.load(handle)
 
-def print_animal_info(data):
-    """Prints name, diet, first location, and type if present"""
+def generate_animals_text(data):
+    """Creates plain text output for HTML insertion"""
+    output = ""
     for animal in data:
         name = animal.get("name")
         diet = animal.get("characteristics", {}).get("diet")
@@ -14,18 +14,28 @@ def print_animal_info(data):
         type_ = animal.get("characteristics", {}).get("type")
 
         if name:
-            print(f"Name: {name}")
+            output += f"Name: {name}\n"
         if diet:
-            print(f"Diet: {diet}")
+            output += f"Diet: {diet}\n"
         if locations:
-            print(f"Location: {locations[0]}")
+            output += f"Location: {locations[0]}\n"
         if type_:
-            print(f"Type: {type_}")
-        print()  # Blank line between animals
+            output += f"Type: {type_}\n"
+        output += "\n"
+    return output
 
 def main():
-    animals_data = load_data("animals_data.json")
-    print_animal_info(animals_data)
+    data = load_data("animals_data.json")
+
+    with open("animals_template.html", "r") as file:
+        template = file.read()
+
+    animals_output = generate_animals_text(data)
+    new_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_output)
+
+    with open("animals.html", "w") as file:
+        file.write(new_html)
 
 if __name__ == "__main__":
     main()
+
